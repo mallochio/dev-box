@@ -24,7 +24,9 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends google-cloud-cli; \
     rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g @earendil-works/pi-coding-agent
+RUN npm install -g \
+      opencode-ai@latest \
+      @earendil-works/pi-coding-agent@latest
 
 # Required by Render's Docker SSH integration. The disk is mounted at
 # /workspace, not at $HOME, so Render can still provide its SSH shell.
