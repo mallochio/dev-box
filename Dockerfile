@@ -32,6 +32,8 @@ RUN npm install -g @earendil-works/pi-coding-agent
 # Debian-based images commonly ship root locked, which makes SSH close after
 # public-key authentication succeeds.
 RUN usermod --unlock root \
+    && passwd -d root \
+    && usermod --shell /bin/bash paseo \
     && install -d -m 0700 -o paseo -g paseo /home/paseo/.ssh \
     && install -d -m 0700 /root/.ssh
 
