@@ -5,7 +5,6 @@ services:
     plan: standard
     dockerfilePath: ./Dockerfile
     dockerContext: .
-    healthCheckPath: /api/health
     disk:
       name: paseo-workspace
       mountPath: /workspace
