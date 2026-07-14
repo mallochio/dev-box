@@ -37,7 +37,9 @@ RUN usermod --unlock root \
     && install -d -m 0700 -o paseo -g paseo /home/paseo/.ssh \
     && install -d -m 0700 /root/.ssh
 
-ENV HOME=/home/paseo \
+# Keep the image environment consistent with the root account for Render's
+# managed SSH shell. The entrypoint switches HOME to /home/paseo for Paseo.
+ENV HOME=/root \
     PASEO_HOME=/workspace/.paseo \
     PASEO_LISTEN= \
     PASEO_WEB_UI_ENABLED=true \

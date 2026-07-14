@@ -6,6 +6,9 @@ set -euo pipefail
 install -d -m 0755 /workspace
 chown paseo:paseo /workspace
 
+# The managed SSH shell uses root's HOME. Paseo and its agents run as paseo.
+export HOME=/home/paseo
+
 # Render's default PORT is 10000. Respect an explicit PASEO_LISTEN override.
 if [[ -z "${PASEO_LISTEN:-}" ]]; then
   export PASEO_LISTEN="0.0.0.0:${PORT:-10000}"
