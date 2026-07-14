@@ -28,7 +28,11 @@ RUN npm install -g @earendil-works/pi-coding-agent
 
 # Required by Render's Docker SSH integration. The disk is mounted at
 # /workspace, not at $HOME, so Render can still provide its SSH shell.
-RUN install -d -m 0700 -o paseo -g paseo /home/paseo/.ssh \
+# Render's managed SSH proxy authenticates the container's root account.
+# Debian-based images commonly ship root locked, which makes SSH close after
+# public-key authentication succeeds.
+RUN usermod --unlock root \
+    && install -d -m 0700 -o paseo -g paseo /home/paseo/.ssh \
     && install -d -m 0700 /root/.ssh
 
 ENV HOME=/home/paseo \
