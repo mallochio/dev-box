@@ -1,11 +1,10 @@
 # Render Paseo dev box
 
 This is a small private Render service that runs the official Paseo daemon,
-Pi, GitHub CLI, AWS CLI, and Google Cloud CLI. OpenCode is intentionally not
-installed by this image and must already be present in the selected base image.
-The persistent disk is mounted at `/workspace`; agent state, repositories, and
-CLI configuration are redirected there because Render SSH does not allow a disk
-mounted at the running user's `$HOME`.
+Pi, OpenCode, GitHub CLI, AWS CLI, and Google Cloud CLI. The persistent disk is
+mounted at `/workspace`; agent state, repositories, and CLI configuration are
+redirected there because Render SSH does not allow a disk mounted at the
+running user's `$HOME`.
 
 ## Deploy
 
@@ -40,6 +39,7 @@ Run this without printing any secret values:
 ```bash
 command -v paseo opencode pi gh aws gcloud
 printf 'OpenAI key: '; test -n "$OPENAI_API_KEY" && echo present || echo missing
+printf 'Azure key: '; test -n "$AZURE_API_KEY" && echo present || echo missing
 printf 'GCP key file: '; test -r "$GOOGLE_APPLICATION_CREDENTIALS" && echo readable || echo missing
 printf 'GitHub: '; gh auth status >/dev/null 2>&1 && echo ready || echo check-GH_TOKEN
 aws sts get-caller-identity
@@ -64,6 +64,29 @@ cd /workspace/repos
 gh auth setup-git
 gh repo clone OWNER/REPOSITORY
 ```
+
+## Azure AI Foundry
+
+Render stores the Azure key as the `AZURE_API_KEY` environment secret. The
+non-secret endpoint is `AZURE_FOUNDRY_BASE_URL`. On first boot, the image seeds:
+
+- `/workspace/.config/opencode/opencode.json`
+- `/workspace/.pi/agent/models.json`
+
+OpenCode uses a local proxy in the container so Azure's GPT-5.6 parameter rules
+are handled without exposing the Azure key to the agent config. Start a model
+from SSH or Paseo with:
+
+```bash
+cd /workspace/repos/REPOSITORY
+paseo run --provider opencode --model azure/kimi-k2.7-code --detach "Inspect the repository and report its test command."
+paseo run --provider opencode --model azure/gpt-5.6-terra --detach "Inspect the repository and report its architecture."
+paseo run --provider pi --model azure-foundry/kimi-k2.7-code --detach "Inspect the repository and report its test command."
+```
+
+The model IDs are the deployments currently configured in the local setup. A
+model that returns Azure `404` is not deployed under that ID; update both
+persistent JSON files with the deployment ID shown by Azure AI Foundry.
 
 ## Pair Paseo with the phone
 

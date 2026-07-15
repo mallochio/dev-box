@@ -62,7 +62,11 @@ ENV HOME=/root \
 
 WORKDIR /workspace
 COPY render-entrypoint.sh /usr/local/bin/render-entrypoint
-RUN chmod 0755 /usr/local/bin/render-entrypoint
+COPY azure-foundry-proxy.mjs opencode.json pi-models.json /opt/render-devbox/
+RUN chmod 0755 /usr/local/bin/render-entrypoint \
+    && chmod 0644 /opt/render-devbox/azure-foundry-proxy.mjs \
+      /opt/render-devbox/opencode.json \
+      /opt/render-devbox/pi-models.json
 
 # Render performs the HTTP health check itself. The base image health check
 # assumes port 6767, while Render supplies PORT at runtime.

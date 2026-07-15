@@ -14,6 +14,10 @@ services:
         generateValue: true
       - key: OPENAI_API_KEY
         sync: false
+      - key: AZURE_API_KEY
+        sync: false
+      - key: AZURE_FOUNDRY_BASE_URL
+        value: https://ih-foundry-resource.services.ai.azure.com/openai/v1
       - key: AWS_ACCESS_KEY_ID
         sync: false
       - key: AWS_SECRET_ACCESS_KEY

@@ -6,6 +6,27 @@ set -euo pipefail
 install -d -m 0755 /workspace
 chown paseo:paseo /workspace
 
+# Seed agent configuration once on the persistent disk. Keep later user edits.
+install -d -m 0755 -o paseo -g paseo \
+  /workspace/.config/opencode \
+  /workspace/.pi/agent \
+  /workspace/.local/state
+if [[ ! -e /workspace/.config/opencode/opencode.json ]]; then
+  install -m 0644 -o paseo -g paseo \
+    /opt/render-devbox/opencode.json \
+    /workspace/.config/opencode/opencode.json
+fi
+if [[ ! -e /workspace/.pi/agent/models.json ]]; then
+  install -m 0644 -o paseo -g paseo \
+    /opt/render-devbox/pi-models.json \
+    /workspace/.pi/agent/models.json
+fi
+
+if [[ -n "${AZURE_API_KEY:-}" ]]; then
+  node /opt/render-devbox/azure-foundry-proxy.mjs \
+    >>/workspace/.local/state/azure-foundry-proxy.log 2>&1 &
+fi
+
 # The managed SSH shell uses root's HOME. Paseo and its agents run as paseo.
 export HOME=/home/paseo
 

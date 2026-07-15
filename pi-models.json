@@ -1,0 +1,48 @@
+{
+  "providers": {
+    "azure-foundry": {
+      "baseUrl": "https://ih-foundry-resource.services.ai.azure.com/openai/v1",
+      "api": "openai-completions",
+      "apiKey": "$AZURE_API_KEY",
+      "authHeader": true,
+      "models": [
+        {
+          "id": "model-router",
+          "name": "Model Router (Azure Foundry)",
+          "contextWindow": 400000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "gpt-5.6-terra",
+          "name": "GPT 5.6 Terra",
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "gpt-5.6-luna",
+          "name": "GPT 5.6 Luna",
+          "contextWindow": 1050000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "deepseek-v4-flash-max",
+          "name": "DeepSeek V4 Flash Max (Azure)",
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash (Azure)",
+          "contextWindow": 1000000,
+          "maxTokens": 128000
+        },
+        {
+          "id": "kimi-k2.7-code",
+          "name": "Kimi K2.7 Code (Azure)",
+          "contextWindow": 262144,
+          "maxTokens": 262144
+        }
+      ]
+    }
+  }
+}
