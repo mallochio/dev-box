@@ -74,15 +74,17 @@ non-secret endpoint is `AZURE_FOUNDRY_BASE_URL`. On first boot, the image seeds:
 - `/workspace/.pi/agent/models.json`
 
 OpenCode uses a local proxy in the container so Azure's GPT-5.6 parameter rules
-are handled without exposing the Azure key to the agent config. Start a model
-from SSH or Paseo with:
+are handled without exposing the Azure key to the agent config. From SSH, run:
 
 ```bash
 cd /workspace/repos/REPOSITORY
-paseo run --provider opencode --model azure/kimi-k2.7-code --detach "Inspect the repository and report its test command."
-paseo run --provider opencode --model azure/gpt-5.6-terra --detach "Inspect the repository and report its architecture."
-paseo run --provider pi --model azure-foundry/kimi-k2.7-code --detach "Inspect the repository and report its test command."
+opencode run -m azure/kimi-k2.7-code "Inspect the repository and report its test command."
+opencode run -m azure/gpt-5.6-terra "Inspect the repository and report its architecture."
+pi --provider azure-foundry --model kimi-k2.7-code
 ```
+
+From the Paseo phone app, create an OpenCode or Pi session and select the same
+model IDs in its model picker.
 
 The model IDs are the deployments currently configured in the local setup. A
 model that returns Azure `404` is not deployed under that ID; update both
@@ -100,15 +102,9 @@ Copy the returned `url` into the Paseo mobile app's add-host/pair flow. Treat
 that URL like a password. If it is exposed, restart the service/daemon and pair
 again to rotate the offer.
 
-The daemon is already running when the service is healthy. From a repository,
-Paseo can start either agent:
-
-```bash
-cd /workspace/repos/REPOSITORY
-paseo run --provider opencode --detach "Inspect the repository and report its test command. Do not edit files."
-paseo run --provider pi --detach "Inspect the repository and report its test command. Do not edit files."
-paseo ls
-```
+The daemon is already running when the service is healthy. In the Paseo phone
+app, select a repository and choose either OpenCode or Pi. For direct SSH model
+commands, see the Azure section below.
 
 `OPENAI_API_KEY` is consumed by both OpenCode's OpenAI provider and Pi. Use the
 agent's `/connect` or `/login` flow only if choosing a different provider.
