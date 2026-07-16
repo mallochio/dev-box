@@ -24,6 +24,9 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends google-cloud-cli; \
     rm -rf /var/lib/apt/lists/*
 
+RUN curl -LsSf https://astral.sh/uv/install.sh \
+      | env UV_INSTALL_DIR=/usr/local/bin sh
+
 RUN npm install -g \
       opencode-ai@latest \
       @earendil-works/pi-coding-agent@latest
