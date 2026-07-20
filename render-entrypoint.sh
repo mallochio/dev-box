@@ -6,6 +6,11 @@ set -euo pipefail
 install -d -m 0755 /workspace
 chown paseo:paseo /workspace
 
+# Ensure repositories cloned as root are writable by paseo.
+if [[ -d /workspace/repos ]]; then
+  chown -R paseo:paseo /workspace/repos
+fi
+
 # Seed agent configuration once on the persistent disk. Keep later user edits.
 install -d -m 0755 -o paseo -g paseo \
   /workspace/.config/opencode \
